@@ -114,8 +114,8 @@
 ;; Placement Functions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def columns (range 0 6))
-(def rows (range 1 5))
+(def columns (range 0 5))
+(def rows (range 1 4))
 
 (def α (/ π 12))
 (def β (/ π 36))
@@ -306,22 +306,22 @@
   (union
    (thumb-place 0 -1/2 (union shape (extended-plates 2)))
 
-   (thumb-place 1 7/8 (union shape (extended-plates 1.25)))
+   #_(thumb-place 1 7/8 (union shape (extended-plates 1.25)))
    (thumb-place 1 -5/8 (union shape (extended-plates 1.75)))
 
    (thumb-place 2 -3/4 (union shape (extended-plates 1.5)))
-   (thumb-place 2 3/4 (union shape (extended-plates 1.5)))
+   #_(thumb-place 2 3/4 (union shape (extended-plates 1.5)))
    ))
 
 (defn thumb-layout-bottom [shape]
   (union
-   (thumb-place 0 -1/2 shape)
+   (thumb-place 0 -1 shape)
 
-   (thumb-place 1 7/8 shape)
-   (thumb-place 1 -5/8 shape)
+   #_(thumb-place 1 7/8 shape)
+   (thumb-place 1 -1 shape)
 
-   (thumb-place 2 -3/4 shape)
-   (thumb-place 2 3/4 shape)
+   (thumb-place 2 -1 shape)
+   #_(thumb-place 2 3/4 shape)
    ))
 
 (def thumbcaps
@@ -357,15 +357,15 @@
      (union
 
       ;;Connecting the double to 1.75
-      (triangle-hulls (thumb-place 0 -1/2 (thumb-tl 2))
-                      (thumb-place 0 -1/2 (thumb-bl 2))
-                      (thumb-place 1 -5/8 (thumb-br 1.75))
-                      (thumb-place 0 -1/2 (thumb-tl 2))
-                      (thumb-place 1 -5/8 (thumb-tr 1.75))
-                      (thumb-place 1 7/8 (thumb-br 1.25)))
+      (triangle-hulls (thumb-place 0 -1 (thumb-tl 2))
+                      (thumb-place 0 -1 (thumb-bl 2))
+                      (thumb-place 1 -1 (thumb-br 1.75))
+                      (thumb-place 0 -1 (thumb-tl 2))
+                      (thumb-place 1 -1 (thumb-tr 1.75))
+                    #_  (thumb-place 1 7/8 (thumb-br 1.25)))
 
-      (triangle-hulls (thumb-place 1 7/8 (thumb-br 1.25))
-                      (thumb-place 1 7/8 (thumb-bl 1.25))
+      (triangle-hulls #_(thumb-place 1 7/8 (thumb-br 1.25))
+                      #_ (thumb-place 1 7/8 (thumb-bl 1.25))
                       (thumb-place 1 -5/8 (thumb-tr 1.75))
                       (thumb-place 1 -5/8 (thumb-tl 1.75)))
 
@@ -384,9 +384,9 @@
                       (thumb-place 2 -3/4 (thumb-tr 1.5))
                       (thumb-place 1 -5/8 (thumb-tl 1.75))
                       (thumb-place 2 3/4 (thumb-br 1.5))
-                      (thumb-place 1 7/8 (thumb-bl 1.25))
+                      #_(thumb-place 1 7/8 (thumb-bl 1.25))
                       (thumb-place 2 3/4 (thumb-tr 1.5))
-                      (thumb-place 1 7/8 (thumb-tl 1.25))
+                      #_(thumb-place 1 7/8 (thumb-tl 1.25))
                       )
 
 
