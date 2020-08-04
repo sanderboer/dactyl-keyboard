@@ -126,6 +126,8 @@
 
 (def α (/ π 12))
 (def β (/ π 36))
+(def tent-angle (/ π 12))
+
 (def cap-top-height (+ plate-thickness sa-profile-key-height))
 (def row-radius (+ (/ (/ (+ mount-height 1/2) 2)
                       (Math/sin (/ α 2)))
@@ -150,8 +152,9 @@
                           (translate [0 0 column-radius])
                           (translate column-offset))]
     (->> placed-shape
-         (rotate (/ π 12) [0 1 0])
+         (rotate tent-angle [0 1 0])
          (translate [0 0 13]))))
+
 
 (defn case-place [column row shape]
   (let [row-placed-shape (->> shape
@@ -243,14 +246,13 @@
 ;;;;;;;;;;;;
 ;; Thumbs ;;
 ;;;;;;;;;;;;
-
 (defn thumb-place [column row shape]
   (let [cap-top-height (+ plate-thickness sa-profile-key-height)
         α (/ π 12)
         row-radius (+ (/ (/ (+ mount-height 1) 2)
                          (Math/sin (/ α 2)))
                       cap-top-height)
-        β (/ π 36)
+        β (/ π -36)
         column-radius (+ (/ (/ (+ mount-width 2) 2)
                             (Math/sin (/ β 2)))
                          cap-top-height)
@@ -421,12 +423,12 @@
 (def thumb
 
   (union
-   (thumb-layout (rotate (/ Math/PI 2) [0 0 1] single-plate))
+   (thumb-layout single-plate)
    (color [1 0 0] thumb-connectors)
 
    #_(thumb-place 0 -1/2 (extended-plates 2))
-   #_(thumb-place 1 -1/2 double-plates)))
-
+   #_(thumb-place 1 -1/2 double-plates)
+))
 ;;;;;;;;;;
 ;; Case ;;
 ;;;;;;;;;;
@@ -434,7 +436,7 @@
 ;; In column units
 (def right-wall-column (+ (last columns) 0.55))
 (def left-wall-column (- (first columns) 1/2))
-(def thumb-back-y 0.93)
+(def thumb-back-y -0.5)
 (def thumb-right-wall (- -1/2 0.05))
 (def thumb-front-row (+ -1 0.07))
 (def thumb-left-wall-column (+ 5/2 0.05))
@@ -657,10 +659,10 @@
      (color [1 1 0] (hull (place left-wall-column 1.6666  (translate [1 0 1] wall-sphere-bottom-front))
                           (key-place 0 2 web-post-bl)
                           (key-place 0 3 web-post-tl)))
-     (hull (place left-wall-column 1.6666  (translate [1 0 1] wall-sphere-bottom-front))
+     #_(hull (place left-wall-column 1.6666  (translate [1 0 1] wall-sphere-bottom-front))
            (thumb-place 1 1 web-post-tr)
            (key-place 0 3 web-post-tl))
-     (hull (place left-wall-column 1.6666 (translate [1 0 1] wall-sphere-bottom-front))
+     #_(hull (place left-wall-column 1.6666 (translate [1 0 1] wall-sphere-bottom-front))
            (thumb-place 1 1 web-post-tr)
            (thumb-place 1/2 thumb-back-y (translate [0 -1 1] wall-sphere-bottom-back))))))
 
@@ -674,7 +676,8 @@
                                    (hull (thumb-place x y wall-sphere-top-back)
                                          (thumb-place (+ x top-step) y wall-sphere-top-back)
                                          (thumb-place x (+ y top-step) wall-sphere-top-back)
-                                         (thumb-place (+ x top-step) (+ y top-step) wall-sphere-top-back)))))
+                                         (thumb-place (+ x top-step) (+ y top-step) wall-sphere-top-back))))
+                          )
         back-y thumb-back-y]
     (union
      (apply union
@@ -689,12 +692,12 @@
      (hull (thumb-place 1/2 back-y wall-sphere-bottom-back)
            (case-place left-wall-column 1.6666 wall-sphere-top-front)
            (case-place left-wall-column 1.6666 wall-sphere-bottom-front))
-     (hull
+     #_(hull
       (thumb-place 1/2 thumb-back-y (translate [0 -1 1] wall-sphere-bottom-back))
       (thumb-place 1 1 web-post-tr)
       (thumb-place 3/2 thumb-back-y (translate [0 -1 1] wall-sphere-bottom-back))
       (thumb-place 1 1 web-post-tl))
-     (hull
+     #_(hull
       (thumb-place (+ 5/2 0.05) thumb-back-y (translate [1 -1 1] wall-sphere-bottom-back))
       (thumb-place 3/2 thumb-back-y (translate [0 -1 1] wall-sphere-bottom-back))
       (thumb-place 1 1 web-post-tl)
@@ -705,17 +708,19 @@
         place thumb-place]
     (union
      (apply union
-            (for [x (range-inclusive (+ -1 0.07) (- 1.95 step) step)]
+            (for [x (range-inclusive (+ -1 0.07) (- 0.5 step) step)]
               (hull (place thumb-left-wall-column x wall-sphere-top-front)
                     (place thumb-left-wall-column (+ x step) wall-sphere-top-front)
                     (place thumb-left-wall-column x wall-sphere-bottom-front)
                     (place thumb-left-wall-column (+ x step) wall-sphere-bottom-front))))
-     (hull (place thumb-left-wall-column 1.95 wall-sphere-top-front)
-           (place thumb-left-wall-column 1.95 wall-sphere-bottom-front)
-           (place thumb-left-wall-column thumb-back-y wall-sphere-top-back)
-           (place thumb-left-wall-column thumb-back-y wall-sphere-bottom-back))
+     ;(hull
+      (place thumb-left-wall-column 0.95 wall-sphere-top-front)
+      (place thumb-left-wall-column 0.95 wall-sphere-bottom-front)
+      (place thumb-left-wall-column thumb-back-y wall-sphere-top-back)
+      (place thumb-left-wall-column thumb-back-y wall-sphere-bottom-back)
+      ;)
 
-     (hull
+     #_(hull
       (thumb-place thumb-left-wall-column thumb-back-y (translate [1 -1 1] wall-sphere-bottom-back))
       (thumb-place thumb-left-wall-column 0 (translate [1 0 1] wall-sphere-bottom-back))
       (thumb-place 2 1 web-post-tl)
@@ -723,7 +728,7 @@
      (hull
       (thumb-place thumb-left-wall-column 0 (translate [1 0 1] wall-sphere-bottom-back))
       (thumb-place 2 0 web-post-tl)
-      (thumb-place 2 1 web-post-bl))
+     (thumb-place 2 1 web-post-bl))
      (hull
       (thumb-place thumb-left-wall-column 0 (translate [1 0 1] wall-sphere-bottom-back))
       (thumb-place thumb-left-wall-column -1 (translate [1 0 1] wall-sphere-bottom-back))
@@ -1342,14 +1347,17 @@
            screw-holes)))
 
 (spit "things/test.scad" (write-scad
-                          dactyl-top-right
-                          #_(union
+                          #_dactyl-top-right
+                          (union
                            right-wall
-                           #_back-wall
-                           #_front-wall
-                           #_left-wall
-                           key-holes
-                           connectors
+                           back-wall
+                           front-wall
+                           left-wall
+                           thumb-back-wall
+                           thumb-front-wall
+                           thumb-left-wall
+                           #_key-holes
+                           #_connectors
                            )
                           
                           ))
