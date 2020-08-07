@@ -5,6 +5,11 @@
             [dactyl-keyboard.util :refer :all]
             [unicode-math.core :refer :all]))
 
+(defn deg2rad [degrees]
+  (* (/ degrees 180) pi)
+  )
+
+
 ;;;;;;;;;;;;;;;;;
 ;; Switch Hole ;;
 ;;;;;;;;;;;;;;;;;
@@ -257,9 +262,12 @@
          (rotate (* column β) [0 1 0])
          (translate [0 0 column-radius])
          (translate [mount-width 0 0])
-         (rotate (* π (- 1/4 3/16)) [0 0 1])
-         (rotate (/ π 12) [1 1 0])
-         (translate [-52 -45 40]))))
+                                        ;(rotate (* π (- 1/4 3/16)) [0 0 1])
+                                        ;(rotate (deg2rad 18 ) [1 -1 0])
+      (rotate (deg2rad -20) [0 1 0])        
+      (rotate (deg2rad 10) [1 0 0])
+      (rotate (deg2rad 10) [0 0 1])        
+      (translate [-52 -50 20]))))
 
 (defn thumb-2x-column [shape]
   (thumb-place 0 -1/2 (rotate (/ π 2) [0 0 1] shape)))
