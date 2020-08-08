@@ -7,3 +7,5 @@
 .lein-*
 
 /target
+*.blend1
+*.blend2
