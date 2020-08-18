@@ -126,9 +126,9 @@
 (def columns (range 0 5))
 (def rows (range 1 4))
 
-(def α (/ π 12))
-(def β (/ π 36))
-(def tent-angle (/ π 12))
+(def α (deg2rad 15))
+(def β (deg2rad 5))
+(def tent-angle (deg2rad 25))
 
 (def cap-top-height (+ plate-thickness sa-profile-key-height))
 (def row-radius (+ (/ (/ (+ mount-height 1/2) 2)
@@ -144,8 +144,8 @@
                               (rotate (* α (- 2 row)) [1 0 0])
                               (translate [0 0 row-radius]))
         column-offset (cond
-                        (= column 2) [0 2.82 -3.0] ;;was moved -4.5
-                        (>= column 4) [0 -5.8 5.64]
+                        (= column 2) [0 5.4 -3.0] ;;was moved -4.5
+                        (>= column 4) [0 -11.2 5.64]
                         :else [0 0 0])
         column-angle (* β (- 2 column))
         placed-shape (->> row-placed-shape
@@ -171,7 +171,7 @@
                           (translate [0 0 column-radius])
                           (translate column-offset))]
     (->> placed-shape
-         (rotate (/ π 12) [0 1 0])
+         (rotate tent-angle [0 1 0])
          (translate [0 0 13]))))
 
 (def key-holes
