@@ -1271,6 +1271,11 @@
 ;; Final Export ;;
 ;;;;;;;;;;;;;;;;;;
 
+(def caps-right
+     (union thumbcaps
+            caps)
+   )
+
 (def dactyl-top-right
   (difference
    (union key-holes
@@ -1334,6 +1339,9 @@
 
   (spit "things/lightcycle-cherry-bottom-left.scad"
         (write-scad dactyl-bottom-left)))
+
+(spit "things/caps-right.scad"
+      (write-scad caps-right))
 
 (spit "things/lightcycle-matias-top-right.scad"
       (write-scad dactyl-top-right))
